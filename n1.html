@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error de Lógica - Registro 2038</title>
+    <style>
+        /* Importar fuente futurista */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+
+        :root {
+            --cyber-red: #ff3b3b;
+            --cyber-red-glow: rgba(255, 59, 59, 0.7);
+            --dark-overlay: rgba(10, 12, 18, 0.65); /* Filtro oscuro equilibrado para notar el rostro */
+            --panel-bg: rgba(15, 5, 5, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* Fondo con la nueva imagen difuminada suavemente mediante gradiente oscuro */
+            background: linear-gradient(var(--dark-overlay), var(--dark-overlay)), url('pana.png') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* Contenedor del Error Crítico */
+        .error-container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--panel-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--cyber-red);
+            border-top: 4px solid var(--cyber-red);
+            border-radius: 4px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(255, 59, 59, 0.3);
+            text-align: center;
+        }
+
+        .system-status {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--cyber-red);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* Mensaje en Rojo Parpadeante solicitado */
+        .error-message {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: var(--cyber-red);
+            margin-bottom: 35px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            animation: text-blink 1.2s infinite alternate;
+        }
+
+        .divider {
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cyber-red), transparent);
+            margin: 0 auto 30px auto;
+        }
+
+        /* Botón Volver con Parpadeo solicitado */
+        .btn-retry {
+            display: inline-block;
+            text-decoration: none;
+            background: transparent;
+            border: 2px solid var(--cyber-red);
+            color: var(--cyber-red);
+            padding: 14px 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            animation: btn-blink 1.8s infinite alternate;
+        }
+
+        .btn-retry:hover {
+            background: var(--cyber-red);
+            color: #fff;
+            box-shadow: 0 0 25px var(--cyber-red-glow);
+            animation: none; /* Detiene el parpadeo al pasar el mouse para mejor control */
+            transform: scale(1.03);
+        }
+
+        /* Animación de parpadeo fuerte para el texto */
+        @keyframes text-blink {
+            0% {
+                opacity: 0.3;
+                text-shadow: 0 0 2px rgba(255, 59, 59, 0.2);
+            }
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 15px var(--cyber-red-glow);
+            }
+        }
+
+        /* Animación de parpadeo para el botón y su resplandor */
+        @keyframes btn-blink {
+            0% {
+                opacity: 0.6;
+                box-shadow: 0 0 5px rgba(255, 59, 59, 0.1);
+                border-color: rgba(255, 59, 59, 0.5);
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 20px var(--cyber-red-glow);
+                border-color: var(--cyber-red);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cuadro de Alerta de Lógica Droide -->
+    <div class="error-container">
+        <div class="system-status">[ ALERTA CRÍTICA DEL SISTEMA ]</div>
+        <div class="divider"></div>
+        
+        <!-- Tu mensaje personalizado -->
+        <p class="error-message">
+            Rompiste la Logica droide de Contadores y Registros, deberas iniciar de nuevo
+        </p>
+        
+        <!-- Botón de retorno a la página principal -->
+        <a href="inicio.html" class="btn-retry">Volver</a>
+    </div>
+
+</body>
+</html>

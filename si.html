@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"> <!-- Define la codificación de caracteres para permitir tildes y eñes -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Hace que la página sea responsiva en dispositivos móviles -->
+    <title>Contadores</title> <!-- Título que aparecerá en la pestaña del navegador -->
+    <style>
+        /* ==========================================
+           ESTILOS GLOBALES Y AMBIENTACIÓN BASE 
+           ========================================== */
+        
+        * {
+            margin: 0; /* Elimina los márgenes por defecto de todos los elementos */
+            padding: 0; /* Elimina el relleno por defecto de todos los elementos */
+            box-sizing: border-box; /* Asegura que el padding y border no alteren el ancho total */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* Tipografía limpia y moderna */
+        }
+
+        body {
+            background-image: url('Checehi.png'); /* Carga la imagen de la ciudad futurista como fondo principal */
+            background-size: cover; /* Ajusta la imagen para que cubra toda la pantalla de forma proporcional */
+            background-position: center; /* Centra la imagen de fondo horizontal y verticalmente */
+            background-attachment: fixed; /* Mantiene el fondo estático al hacer scroll, creando un efecto inmersivo */
+            background-repeat: no-repeat; /* Evita que la imagen se duplique o repita en pantallas grandes */
+            color: #e0f7fa; /* Color de texto cian muy claro para contrastar con el fondo oscuro y dar toque tecnológico */
+            min-height: 100vh; /* Garantiza que el cuerpo ocupe al menos el 100% de la altura de la ventana */
+            line-height: 1.6; /* Aumenta el interlineado para mejorar la legibilidad del contenido */
+            overflow-x: hidden; /* Evita cualquier desbordamiento u scroll horizontal no deseado */
+            position: relative; /* Permite posicionar elementos absolutos o capas de superposición con respecto al body */
+        }
+
+        /* Capa oscura superpuesta para mejorar el contraste del texto sobre la imagen de fondo */
+        body::before {
+            content: ""; /* Elemento vacío necesario para que se renderice el pseudoelemento */
+            position: fixed; /* Se fija en la pantalla para cubrir todo el espacio visual */
+            top: 0; /* Alinea en la parte superior absoluta */
+            left: 0; /* Alinea en la parte izquierda absoluta */
+            width: 100%; /* Cubre el 100% del ancho de la pantalla */
+            height: 100%; /* Cubre el 100% de la altura de la pantalla */
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.85) 0%, rgba(2, 12, 27, 0.9) 100%); /* Degradado azul profundo/cyberpunk con opacidad */
+            z-index: -1; /* Se sitúa detrás del contenido pero delante de la imagen de fondo */
+        }
+
+        /* ==========================================
+           CONTENEDOR PRINCIPAL
+           ========================================== */
+        
+        .main-container {
+            max-width: 1200px; /* Limita el ancho máximo del contenido para una lectura cómoda */
+            margin: 0 auto; /* Centra el contenedor horizontalmente en la pantalla */
+            padding: 40px 20px; /* Añade espacio libre arriba/abajo y en los laterales internos */
+            position: relative; /* Asegura que se posicione correctamente en la pila de capas */
+        }
+
+        /* ==========================================
+           ENCABEZADO (HEADER)
+           ========================================== */
+        
+        header {
+            text-align: center; /* Centra los textos dentro del encabezado */
+            margin-bottom: 60px; /* Separa el encabezado de las secciones inferiores */
+            position: relative; /* Preparado por si se añaden efectos de luces o brillos absolutos */
+        }
+
+        .main-title {
+            font-size: 3.5rem; /* Tamaño de letra grande e imponente */
+            font-weight: 800; /* Grosor de fuente ultra negrita */
+            text-transform: uppercase; /* Convierte todo el texto a mayúsculas para mayor impacto */
+            letter-spacing: 4px; /* Aumenta el espacio entre letras dando un aspecto de interfaz de usuario avanzada */
+            color: #00f2fe; /* Color cyan eléctrico, simulando luces de neón de los rascacielos */
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(0, 242, 254, 0.3); /* Efecto de resplandor neón */
+            margin-bottom: 10px; /* Separación con el subtítulo */
+        }
+
+        .subtitle {
+            font-size: 1.2rem; /* Tamaño moderado para información secundaria */
+            color: #4facfe; /* Azul claro brillante complementario */
+            letter-spacing: 2px; /* Espaciado futurista sutil */
+            opacity: 0.9; /* Opacidad ligera para jerarquía visual */
+        }
+
+        /* ==========================================
+           SECCIÓN DE TARJETAS / CONTENIDO
+           ========================================== */
+        
+        .dashboard-grid {
+            display: block; /* Estructura de bloque estándar compatible */
+            margin-top: 30px; /* Margen superior para despegar de los elementos de arriba */
+        }
+
+        .card {
+            background: rgba(10, 25, 47, 0.7); /* Fondo oscuro semitransparente que emula cristal ahumado (Glassmorphism) */
+            border: 1px solid rgba(0, 242, 254, 0.2); /* Borde fino cian con baja opacidad simulando una pantalla digital */
+            border-radius: 8px; /* Esquinas ligeramente suavizadas */
+            padding: 30px; /* Espaciado interno generoso para que respire el texto */
+            margin-bottom: 30px; /* Distancia entre tarjetas consecutivas */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra pronunciada para dar profundidad tridimensional */
+            transition: all 0.3s ease; /* Transición suave para todos los efectos interactivos (hover) */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Eleva la tarjeta sutilmente al pasar el cursor sobre ella */
+            border-color: rgba(0, 242, 254, 0.6); /* Intensifica el color del borde simulando activación por energía */
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15); /* Añade un resplandor azulado en la base de la tarjeta */
+        }
+
+        .card-title {
+            font-size: 1.8rem; /* Tamaño destacado para títulos de bloque */
+            color: #ffffff; /* Blanco puro para máxima legibilidad */
+            margin-bottom: 15px; /* Separación con el texto del cuerpo */
+            border-bottom: 2px solid rgba(79, 172, 254, 0.3); /* Línea divisoria inferior semi-transparente */
+            padding-bottom: 8px; /* Espacio entre el texto del título y la línea divisoria */
+        }
+
+        .card-text {
+            font-size: 1.05rem; /* Tamaño de lectura óptimo */
+            color: #b0bec5; /* Gris azulado claro para un descanso visual */
+            margin-bottom: 15px; /* Espacio antes del siguiente elemento o botón */
+        }
+
+        /* Estilo para listas dentro de las tarjetas */
+        .feature-list {
+            list-style: none; /* Elimina los viñetas circulares por defecto */
+            margin: 15px 0; /* Márgenes superior e inferior */
+        }
+
+        .feature-list li {
+            margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+            position: relative; /* Permite posicionar el nuevo marcador personalizado */
+            padding-left: 20px; /* Deja espacio a la izquierda para el marcador */
+            color: #e0f7fa; /* Color claro para los ítems */
+        }
+
+        .feature-list li::before {
+            content: "▪"; /* Cuadrado pequeño como viñeta futurista de terminal informática */
+            position: absolute; /* Posicionamiento exacto al lado del texto */
+            left: 0; /* Alineado al borde izquierdo del ítem */
+            color: #00f2fe; /* Color neón idéntico al tema principal */
+        }
+
+        /* ==========================================
+           BOTONES FUTURISTAS
+           ========================================== */
+        
+        .btn-action {
+            display: inline-block; /* Permite aplicar anchos, altos y márgenes manteniendo comportamiento en línea */
+            padding: 12px 28px; /* Tamaño del botón cómodo para clics */
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); /* Degradado vibrante de azul a cian */
+            color: #020c1b; /* Texto oscuro profundo para contraste perfecto sobre el fondo brillante */
+            font-weight: 700; /* Texto en negrita para resaltar la acción */
+            text-transform: uppercase; /* Letras mayúsculas institucionales */
+            letter-spacing: 1px; /* Espaciado tecnológico sutil */
+            border: none; /* Sin borde por defecto */
+            border-radius: 4px; /* Esquinas apenas redondeadas */
+            cursor: pointer; /* Muestra la mano indicadora de enlace clicable */
+            text-decoration: none; /* Elimina el subrayado si se usa una etiqueta de enlace <a> */
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animaciones fluidas al interactuar */
+        }
+
+        .btn-action:hover {
+            transform: scale(1.03); /* Aumenta el tamaño un 3% al posicionarse encima */
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6); /* Crea un halo de luz neón alrededor del botón */
+        }
+
+        /* ==========================================
+           NUEVO RECUADRO TRANSPARENTE ALERTA (ROJO)
+           ========================================== */
+        
+        .alert-box {
+            display: block; /* Ocupa todo el ancho disponible para balancear la parte inferior */
+            text-align: center; /* Centra el enlace/texto internamente */
+            margin: 40px auto 20px auto; /* Márgenes exteriores para separarlo bien de las tarjetas y del footer */
+            max-width: 400px; /* Limita el ancho para que mantenga proporciones estilizadas de botón contenedor */
+        }
+
+        .btn-reset {
+            display: block; /* Se comporta como bloque ocupando todo el ancho de su contenedor (.alert-box) */
+            padding: 20px; /* Espaciado interno generoso para que se note que es un recuadro clicable */
+            background: rgba(255, 23, 68, 0.05); /* Fondo ultratransparente con un leve tinte rojo cyberpunk */
+            border: 2px dashed rgba(255, 23, 68, 0.4); /* Borde discontinuo/disparado en rojo neón transparente */
+            border-radius: 6px; /* Bordes suavemente redondeados en sintonía con las tarjetas */
+            color: #ff5252; /* Color de texto rojo brillante/alerta para alta visibilidad visual */
+            text-decoration: none; /* Quita el subrayado clásico de los hipervínculos */
+            font-weight: 700; /* Texto bien marcado y grueso */
+            font-size: 1.2rem; /* Tamaño de letra ligeramente destacado */
+            text-transform: uppercase; /* Todo en mayúsculas imitando comandos de reinicio de software */
+            letter-spacing: 2px; /* Espaciado entre caracteres tecnológico */
+            box-shadow: 0 0 15px rgba(255, 23, 68, 0.1); /* Sutil resplandor rojo de fondo */
+            transition: all 0.4s ease; /* Suaviza las animaciones al pasar el cursor o hacer click */
+            animation: pulseGlow 2.5s infinite alternate; /* Aplica una animación infinita de pulsación lumínica */
+        }
+
+        .btn-reset:hover {
+            background: rgba(255, 23, 68, 0.15); /* Vuelve el fondo ligeramente más sólido al posicionarse sobre él */
+            border: 2px solid #ff1744; /* El borde pasa de discontinuo a línea sólida y con rojo puro brillante */
+            color: #ffffff; /* El texto cambia a blanco para contrastar fuertemente sobre el rojo encendido */
+            box-shadow: 0 0 25px rgba(255, 23, 68, 0.6); /* Intensifica el destello rojo simulando una sobrecarga del sistema */
+            transform: scale(1.02); /* Crece sutilmente dando respuesta física al usuario */
+        }
+
+        /* Animación para el efecto de pulsación en el estado de espera (Alerta pasiva) */
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 23, 68, 0.1); /* Resplandor mínimo */
+                border-color: rgba(255, 23, 68, 0.3); /* Color de borde más tenue */
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(255, 23, 68, 0.3); /* Resplandor máximo */
+                border-color: rgba(255, 23, 68, 0.6); /* Color de borde más vivo */
+            }
+        }
+
+        /* ==========================================
+           PIE DE PÁGINA (FOOTER)
+           ========================================== */
+        
+        footer {
+            text-align: center; /* Centra el texto del copyright y créditos */
+            padding: 40px 20px; /* Relleno para separarlo del contenido final */
+            margin-top: 40px; /* Margen superior respecto al grid de tarjetas */
+            border-top: 1px solid rgba(242, 242, 242, 0.05); /* Línea divisoria muy tenue */
+            font-size: 0.9rem; /* Tamaño de fuente reducido */
+            color: #607d8b; /* Color grisáceo apagado para no distraer */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor general que estructura la arquitectura limpia de la web -->
+    <div class="main-container"> 
+        
+        <!-- Encabezado de la página -->
+        <header> 
+            <h1 class="main-title">Contadores</h1> <!-- Título principal estilizado con aura de neón cyan -->
+            <p class="subtitle">Inhibicion y su funcionamiento</p> <!-- Subtítulo descriptivo con ambientación futurista -->
+        </header> 
+
+        <!-- Rejilla o contenedor de paneles informativos -->
+        <main class="dashboard-grid"> 
+            
+            <!-- Bloque/Tarjeta informativo 1 -->
+            <section class="card"> 
+                <h2 class="card-title">¿Qué es?</h2> <!-- Título del bloque informativo -->
+                <p class="card-text">La inhibición (INH) es una señal de control que detiene temporalmente el funcionamiento del contador. Mientras está activada, el contador no cambia su valor aunque siga recibiendo pulsos de reloj.</p>
+                <ul class="feature-list"> <!-- Lista con viñetas personalizadas estilo terminal -->
+                    <li>Cuando la señal INH está activa, el contador mantiene el mismo estado y deja de contar. Al desactivarla, continúa el conteo desde el valor en el que se había detenido.</li> <!-- Elemento 1 de la lista -->
+                    <li>Inhibición asíncrona: es más sencilla, pero puede generar cambios no deseados debido a la forma en que actúa sobre la señal de reloj.</li> <!-- Elemento 2 de la lista -->
+                    <li>Inhibición síncrona: evita esos inconvenientes porque el control se realiza de forma sincronizada con el reloj, siendo una solución más confiable.</li> <!-- Elemento 3 de la lista -->
+                </ul> 
+                
+                <!-- CONECTADO A SS.HTML -->
+                <a href="ss.html" class="btn-action">Acceder al Sistema</a> 
+            </section> 
+
+            <!-- Bloque/Tarjeta informativo 2 -->
+            <section class="card"> 
+                <h2 class="card-title">¿Como funciona?</h2> <!-- Segundo título de bloque -->
+                <p class="card-text">Cuando la señal INH está activa, el contador mantiene el mismo estado y deja de contar. Al desactivarla, continúa el conteo desde el valor en el que se había detenido.</p> <!-- Segundo texto del cuerpo -->
+                
+                <!-- CONECTADO A SS.HTML -->
+                <a href="ss.html" class="btn-action">Ver Reportes</a> 
+            </section> 
+
+        </main> 
+
+        <!-- Sección interactiva de alerta / Reinicio de terminal -->
+        <div class="alert-box">
+            <!-- Enlace en forma de caja transparente roja con animación que redirige al archivo de inicio -->
+            <a href="L1.html" class="btn-reset">¿Deseas Continuar?</a> 
+        </div>
+
+        <!-- Sección inferior para datos de autoría y derechos -->
+        <footer> 
+            <p>&copy; 2026 Contadores Inc. Todos los derechos reservados bajo la red globalizada.</p> <!-- Texto legal y copyright -->
+        </footer> 
+
+    </div> 
+
+</body>
+</html>

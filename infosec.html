@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"> <!-- Define la codificación para mostrar caracteres en español de forma correcta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Hace que el lienzo sea adaptable y responsivo -->
+    <title>Mapa Conceptual Futurista</title> <!-- Título del documento de la interfaz -->
+    <style>
+        /* ==========================================
+           ESTILOS GLOBALES Y AMBIENTACIÓN BASE (DETROIT: BECOME HUMAN)
+           ========================================== */
+        
+        * {
+            margin: 0; /* Resetea el margen de todos los componentes de la interfaz */
+            padding: 0; /* Resetea los rellenos de forma global */
+            box-sizing: border-box; /* Previene distorsiones de tamaño en cajas con padding o bordes */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* Tipografía limpia y moderna */
+        }
+
+        body {
+            background-image: url('chechiu.png'); /* Carga la imagen del hangar cibernético como fondo principal */
+            background-size: cover; /* Ajusta la imagen de fondo para cubrir todo el ancho y alto del viewport */
+            background-position: center; /* Centra el fondo horizontal y verticalmente */
+            background-attachment: fixed; /* Mantiene el fondo estático al hacer scroll, dando efecto de profundidad */
+            background-repeat: no-repeat; /* Asegura que la imagen de fondo no se replique en mosaico */
+            color: #ffffff; /* Texto blanco puro como la iluminación de los paneles del hangar */
+            min-height: 100vh; /* Obliga a que la página tenga como mínimo el alto total de la pantalla */
+            display: block; /* Comportamiento de bloque estándar para flujo continuo */
+            position: relative; /* Permite colocar la capa oscura superpuesta de manera absoluta */
+            padding: 40px 20px; /* Relleno general para que el contenido no pegue a los bordes de la pantalla */
+        }
+
+        /* Capa superpuesta para oscurecer sutilmente el fondo y asegurar legibilidad del mapa */
+        body::before {
+            content: ""; /* Elemento obligatorio para renderizar el pseudoelemento vacío */
+            position: fixed; /* Se fija en la pantalla acompañando la vista global */
+            top: 0; left: 0; width: 100%; height: 100%; /* Cubre el área total del navegador */
+            background: linear-gradient(180deg, rgba(10, 20, 35, 0.75) 0%, rgba(2, 6, 12, 0.85) 100%); /* Degradado azul profundo frío */
+            z-index: 1; /* Se sitúa arriba del fondo pero debajo de la interfaz del usuario */
+        }
+
+        /* Contenedor que agrupa toda la interfaz activa por encima del fondo */
+        .wrapper {
+            position: relative; /* Levanta los elementos por encima de la capa body::before */
+            z-index: 2; /* Mayor que la capa oscura para recibir clics e interacciones */
+            max-width: 1200px; /* Ancho máximo para mantener un diseño centrado y limpio */
+            margin: 0 auto; /* Centra el contenedor horizontalmente */
+            text-align: center; /* Centra los títulos generales y estructuras */
+        }
+
+        header {
+            margin-bottom: 50px; /* Espacio de separación entre el título y el mapa conceptual */
+        }
+
+        .title {
+            font-size: 2.8rem; /* Tamaño de letra imponente para el título principal */
+            font-weight: 300; /* Estilo tipográfico delgado y elegante tipo interfaz Android */
+            text-transform: uppercase; /* Convierte los caracteres a mayúsculas */
+            letter-spacing: 5px; /* Separación de letras que emula el software de CyberLife */
+            color: #ffffff; /* Color blanco brillante */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Resplandor suave blanco */
+            margin-bottom: 10px; /* Margen inferior */
+        }
+
+        .subtitle {
+            font-size: 1rem; /* Tamaño moderado para información secundaria */
+            color: #00d2ff; /* Azul brillante característico del indicador LED de los androides */
+            letter-spacing: 2px; /* Espaciado moderno */
+            text-transform: uppercase; /* Subtítulo corporativo en mayúsculas */
+        }
+
+        /* ==========================================
+           ESTRUCTURA DEL MAPA CONCEPTUAL CON ZOOM INDIVIDUAL
+           ========================================== */
+        
+        .map-canvas {
+            width: 100%; /* Ocupa el ancho máximo disponible del contenedor central */
+            margin-bottom: 60px; /* Espacio para separar el mapa del botón de continuación inferior */
+            padding: 20px; /* Margen interno para evitar recortes visuales */
+        }
+
+        /* Bloques o nodos del mapa conceptual */
+        .node {
+            background: rgba(255, 255, 255, 0.04); /* Fondo translúcido tipo cristal hiper-limpio */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde blanco fino simulando interfaces de datos */
+            border-left: 4px solid #00d2ff; /* Línea de acento azul en el lado izquierdo (Color distintivo Android) */
+            border-radius: 4px; /* Esquinas ligeramente suavizadas */
+            padding: 25px; /* Relleno generoso dentro de cada nodo del mapa */
+            margin: 20px auto; /* Centra los bloques horizontalmente y los separa entre sí */
+            max-width: 650px; /* Limita el ancho de los nodos para mantener orden jerárquico */
+            text-align: left; /* Alinea el texto del contenido hacia la izquierda para legibilidad */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra difuminada para despegarlo del fondo */
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.3s ease, box-shadow 0.3s ease; /* Transición fluida para el efecto de escala */
+        }
+
+        /* CRÍTICO: Efecto de zoom del 30% solicitado al posicionarse encima (hover) */
+        .node:hover {
+            transform: scale(1.30); /* Aplica el incremento exacto del 30% en su escala visual */
+            border-color: #00d2ff; /* Transforma el borde a azul brillante CyberLife */
+            background: rgba(10, 25, 50, 0.85); /* Vuelve el fondo más opaco para destacar sobre el resto del mapa */
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.25); /* Añade aura lumínica azulada de enfoque activo */
+            z-index: 10; /* Eleva el nodo sobre los demás para evitar que se pisen en el zoom */
+            position: relative; /* Necesario para que el índice z-index tome efecto */
+        }
+
+        .node-title {
+            font-size: 1.4rem; /* Tamaño destacado para títulos de nodos */
+            color: #ffffff; /* Texto en blanco para alto contraste */
+            margin-bottom: 8px; /* Separación con la descripción */
+            font-weight: 600; /* Grosor destacado */
+            display: flex; /* Permite estructurar etiquetas internas si se desea */
+            align-items: center; /* Alineación vertical */
+        }
+
+        .node-desc {
+            font-size: 1rem; /* Tamaño estándar de lectura */
+            color: #d1dbe5; /* Gris claro suave para descanso ocular del operador de interfaz */
+            line-height: 1.5; /* Interlineado equilibrado */
+        }
+
+        /* Líneas o conectores visuales que representan la jerarquía del mapa conceptual */
+        .connector {
+            width: 2px; /* Grosor de la línea vertical conectora */
+            height: 30px; /* Altura de la línea que une los bloques */
+            background: linear-gradient(to bottom, #00d2ff, rgba(255,255,255,0.2)); /* Degradado tecnológico de azul a gris transparente */
+            margin: 0 auto; /* Centra la línea con respecto a los nodos superiores e inferiores */
+        }
+
+        /* ==========================================
+           BOTÓN CONTINUAR INTERFAZ
+           ========================================== */
+        
+        .action-container {
+            margin-top: 20px; /* Separación del bloque de acción final */
+        }
+
+        .btn-continue {
+            display: inline-block; /* Permite controlar el tamaño exacto y márgenes internos */
+            padding: 16px 45px; /* Tamaño generoso para emular botones de confirmación de software */
+            background: transparent; /* Fondo transparente adaptado a la estética minimalista del hangar */
+            border: 2px solid #00d2ff; /* Borde sólido azul neón */
+            color: #00d2ff; /* Texto en color azul brillante CyberLife */
+            font-size: 1.1rem; /* Tamaño de letra legible e importante */
+            font-weight: 700; /* Texto resaltado en negrita */
+            text-transform: uppercase; /* Transforma el texto por completo a mayúsculas */
+            letter-spacing: 3px; /* Espaciado premium entre caracteres */
+            border-radius: 4px; /* Esquinas suavemente cortadas */
+            text-decoration: none; /* Remueve los estilos nativos de enlaces */
+            cursor: pointer; /* Muestra el puntero de selección al posicionarse encima */
+            transition: all 0.3s ease; /* Transición para cambios cromáticos y lumínicos fluidos */
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.1); /* Resplandor base tenue */
+        }
+
+        .btn-continue:hover {
+            background: #00d2ff; /* Rellena el botón completamente con azul al hacer hover */
+            color: #02060c; /* Vuelve el texto oscuro profundo para lectura óptima sobre azul brillante */
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.5); /* Intensifica el halo de luz azul alrededor del botón */
+            transform: translateY(-2px); /* Pequeña elevación física responsiva */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor centralizado elevado sobre la capa de fondo -->
+    <div class="wrapper"> 
+        
+        <!-- Sección de encabezado superior de la interfaz -->
+        <header> 
+            <h1 class="title">REGISTROS</h1> <!-- Título principal solicitado -->
+            <p class="subtitle">Estructura de Datos y Modelos Automatizados</p> <!-- Subtítulo de ambientación tecnológica -->
+        </header> 
+
+        <!-- Contenedor del Mapa Conceptual jerárquico -->
+        <main class="map-canvas"> 
+            
+            <!-- Nodo Central / Idea Principal -->
+            <section class="node"> 
+                <!-- <h2 class="node-title">¿Qué es?</h2> -->
+                <p class="node-desc">“Un registro es un circuito digital que sirve para almacenar información binaria, es decir, información formada por ceros y unos. Está formado por varios biestables, y cada uno puede guardar un bit.”</p> <!-- Espacio para la información del usuario -->
+            </section> 
+
+            <!-- Conector jerárquico vertical -->
+            <div class="connector"></div> 
+
+            <!-- Nodo Secundario 1 -->
+            <section class="node"> 
+                <h2 class="node-title">¿Como funciona?</h2> <!-- Título del segundo bloque jerárquico -->
+                <p class="node-desc">Los datos se cargan mediante una señal de reloj. Cada biestable guarda un bit y, entre todos, forman una palabra binaria. La información queda guardada hasta que se carga un dato nuevo o se reinicia.</p> <!-- Espacio para información secundaria -->
+            </section> 
+
+            <!-- Conector jerárquico vertical -->
+            <div class="connector"></div> 
+
+            <!-- Nodo Secundario 2 -->
+            <section class="node"> 
+                <h2 class="node-title">Registros a Encontrar</h2> <!-- Título del tercer bloque jerárquico -->
+                <p class="node-desc">SISO, SIPO, PISO, PIPO.</p> <!-- Espacio final de información -->
+            </section> 
+
+        </main> 
+
+        <!-- Contenedor inferior para el botón de navegación -->
+        <div class="action-container"> 
+            <!-- Enlace interactivo en formato botón estilizado "Continuar" para avanzar a la siguiente sección -->
+            <a href="siguiente.html" class="btn-continue">Continuar</a> 
+        </div> 
+
+    </div> 
+
+</body>
+</html>

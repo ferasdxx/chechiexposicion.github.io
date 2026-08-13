@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"> <!-- Define la codificación de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Hace la página responsiva -->
+    <title>Error de Sistema</title>
+    
+    <!-- Esta línea realiza el redireccionamiento automático a si.html tras 4 segundos -->
+    <meta http-equiv="refresh" content="4;url=si.html">
+    
+    <style>
+        /* ==========================================
+           ESTILOS GLOBALES Y TRANSMISIÓN DE ALERTA
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #020c1b; /* Fondo oscuro idéntico a la capa de contadores */
+            color: #ff5252; /* Color de alerta rojo neón */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Capa de rejilla/degradado cyberpunk para mantener la atmósfera */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.95) 0%, rgba(2, 12, 27, 0.98) 100%);
+            z-index: 1;
+        }
+
+        /* ==========================================
+           CONTENEDOR DE ERROR DE TERMINAL
+           ========================================== */
+        .error-container {
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+            border: 2px dashed rgba(255, 23, 68, 0.4); /* Borde discontinuo de advertencia */
+            border-radius: 8px;
+            background: rgba(255, 23, 68, 0.03); /* Cristal ahumado tintado en rojo */
+            box-shadow: 0 0 30px rgba(255, 23, 68, 0.1);
+            max-width: 600px;
+            width: 90%;
+            animation: pulseGlow 2s infinite alternate; /* Animación de pulsación pasiva */
+        }
+
+        .icon-warning {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 23, 68, 0.6);
+        }
+
+        .error-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            color: #ffffff; /* Blanco puro para contrastar */
+            text-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
+        }
+
+        .error-msg {
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            color: #ff5252;
+            text-shadow: 0 0 8px rgba(255, 82, 82, 0.3);
+            margin-bottom: 30px;
+        }
+
+        /* ==========================================
+           BARRA DE PROGRESO DE REDIRECCIÓN
+           ========================================== */
+        .loader-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 23, 68, 0.15);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-progress {
+            position: absolute;
+            top: 0; left: 0; height: 100%;
+            width: 0%;
+            background: #ff1744; /* Barra de energía roja pura */
+            box-shadow: 0 0 10px #ff1744;
+            animation: loadProgress 4s linear forwards; /* Tarda exactamente los 4s del meta-refresh */
+        }
+
+        .redirect-text {
+            font-size: 0.85rem;
+            color: #607d8b;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* ==========================================
+           ANIMACIONES DEL SISTEMA
+           ========================================== */
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 15px rgba(255, 23, 68, 0.05);
+                border-color: rgba(255, 23, 68, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(255, 23, 68, 0.2);
+                border-color: rgba(255, 23, 68, 0.6);
+            }
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <!-- Icono de advertencia en neón -->
+        <div class="icon-warning">⚠️</div>
+        
+        <h1 class="error-title">CRITICAL_SYSTEM_FAILURE</h1>
+        
+        <!-- Tu mensaje personalizado -->
+        <p class="error-msg">Error al cargar datos de los Droides de tu materia</p>
+        
+        <!-- Barra animada de transferencia a si.html -->
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+        <p class="redirect-text">Forzando desvío a terminal segura...</p>
+    </div>
+
+</body>
+</html>

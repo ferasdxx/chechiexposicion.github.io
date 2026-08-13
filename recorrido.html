@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recorrido</title>
+
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --cyan: #2fe3d6;
+            --cyan-soft: rgba(47, 227, 214, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+
+            background: radial-gradient(
+                circle at 50% 20%,
+                #101a2e 0%,
+                var(--bg) 60%
+            );
+
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Cuadro blanco */
+        .cuadro {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: 400px;
+            padding: 35px;
+
+            background-color: white;
+
+            border: 2px solid var(--cyan);
+            border-radius: 16px;
+
+            box-shadow:
+                0 0 20px var(--cyan-soft),
+                0 0 40px rgba(47, 227, 214, 0.15);
+
+            text-align: center;
+        }
+
+        /* Pregunta */
+        .cuadro h2 {
+            margin: 0 0 30px;
+
+            color: #0a0e1a;
+            font-size: 24px;
+        }
+
+        /* Botones */
+        .opciones {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .boton {
+            width: 110px;
+            padding: 12px;
+
+            background-color: #0a0e1a;
+            color: white;
+
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+
+            border: 2px solid var(--cyan);
+            border-radius: 10px;
+
+            transition: 0.25s;
+        }
+
+        .boton:hover {
+            background-color: var(--cyan);
+            color: #0a0e1a;
+
+            box-shadow: 0 0 15px var(--cyan-soft);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cuadro">
+
+        <h2>¿Completaste el recorrido?</h2>
+
+        <div class="opciones">
+
+            <a href="si.html" class="boton">
+                Sí
+            </a>
+
+            <a href="infoprim2.html" class="boton">
+                No
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

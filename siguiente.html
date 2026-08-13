@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro 2038</title>
+    <style>
+        /* Importar fuente futurista y limpia */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+
+        :root {
+            --cyber-blue: #00d2ff;
+            --cyber-blue-glow: rgba(0, 210, 255, 0.6);
+            --cyber-red: #ff3b3b;
+            --cyber-red-glow: rgba(255, 59, 59, 0.6);
+            --cyber-green: #00ff88;
+            --cyber-green-glow: rgba(0, 255, 136, 0.6);
+            --dark-bg: rgba(10, 15, 20, 0.75);
+            --light-text: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--light-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('checha.png') no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        /* Barra de Estado superior */
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+        }
+
+        .logo-area {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .triangle-led {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 18px solid var(--cyber-blue);
+            filter: drop-shadow(0 0 8px var(--cyber-blue-glow));
+            animation: pulse 2s infinite alternate;
+        }
+
+        .system-status {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cyber-blue);
+            text-shadow: 0 0 5px var(--cyber-blue-glow);
+        }
+
+        /* Contenedor Principal */
+        main {
+            flex: 1;
+            display: flex;
+            padding: 40px;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Panel Izquierdo */
+        .hero-panel {
+            flex: 1.2;
+            padding: 40px;
+            background: var(--dark-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-left: 4px solid var(--cyber-blue);
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .hero-panel h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .hero-panel h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--cyber-blue);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, var(--cyber-blue), transparent);
+            margin-bottom: 30px;
+        }
+
+        /* Panel Derecho */
+        .data-panel {
+            flex: 0.8;
+            background: rgba(10, 15, 20, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-self: stretch;
+            justify-content: center;
+        }
+
+        .data-block {
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+            padding-bottom: 15px;
+        }
+
+        .data-block:last-child {
+            border: none;
+        }
+
+        .data-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .placeholder-box {
+            background: rgba(255, 255, 255, 0.05);
+            height: 40px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            color: #aaa;
+            font-style: italic;
+            font-size: 0.9rem;
+            border-right: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .placeholder-box:hover {
+            border-right-color: var(--cyber-blue);
+            background: rgba(0, 210, 255, 0.05);
+        }
+
+        .large-box {
+            height: 120px;
+        }
+
+        /* SECTOR INTERMEDIO: Menú de Decisión (Capa superpuesta oculta por defecto) */
+        .decision-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 6, 8, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Cuando se activa el menú */
+        .decision-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .decision-box {
+            background: rgba(15, 22, 30, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--cyber-blue);
+            padding: 50px;
+            border-radius: 4px;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .decision-overlay.active .decision-box {
+            transform: scale(1);
+        }
+
+        .decision-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            color: #fff;
+        }
+
+        .choice-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        /* Botones específicos de opción */
+        .btn-choice {
+            font-family: 'Orbitron', sans-serif;
+            text-decoration: none;
+            padding: 12px 40px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* NO en Rojo */
+        .btn-no {
+            border: 1px solid var(--cyber-red);
+            color: var(--cyber-red);
+            background: rgba(255, 59, 59, 0.05);
+        }
+
+        .btn-no:hover {
+            background: var(--cyber-red);
+            color: #fff;
+            box-shadow: 0 0 25px var(--cyber-red-glow);
+        }
+
+        /* SÍ en Verde */
+        .btn-yes {
+            border: 1px solid var(--cyber-green);
+            color: var(--cyber-green);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .btn-yes:hover {
+            background: var(--cyber-green);
+            color: #040c08;
+            box-shadow: 0 0 25px var(--cyber-green-glow);
+        }
+
+        /* Footer / Controles */
+        footer {
+            width: 100%;
+            padding: 20px 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-info {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background: transparent;
+            border: 1px solid var(--cyber-blue);
+            color: var(--cyber-blue);
+            padding: 8px 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--cyber-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--cyber-blue-glow);
+        }
+
+        .btn-red {
+            border-color: var(--cyber-red);
+            color: var(--cyber-red);
+            padding: 6px 18px;
+            font-size: 0.75rem;
+        }
+
+        .btn-red:hover {
+            background: var(--cyber-red);
+            color: #fff;
+            box-shadow: 0 0 15px var(--cyber-red-glow);
+        }
+
+        /* Animación para el LED */
+        @keyframes pulse {
+            from { opacity: 0.6; filter: drop-shadow(0 0 4px var(--cyber-blue-glow)); }
+            to { opacity: 1; filter: drop-shadow(0 0 12px var(--cyber-blue-glow)); }
+        }
+
+        /* Adaptabilidad */
+        @media (max-width: 968px) {
+            main {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .hero-panel, .data-panel {
+                width: 100%;
+                flex: none;
+            }
+            .hero-panel h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-area">
+            <div class="triangle-led"></div>
+            <span>REGISTRO // 2038</span>
+        </div>
+        <div class="system-status">
+            SISTEMA: OPERATIVO // MÓDULO_EXPO_V.1.0
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        <section class="hero-panel">
+            <h2>[ REGISTRO - DETROIT C2h0Chi1]</h2>
+            <h1>Registro</h1>
+            <div class="divider"></div>
+            
+            <div class="data-label">Registro de Entrada serie y salida serie</div>
+            <div class="placeholder-box large-box" style="margin-bottom: 20px;">
+                Cada pulso de reloj hace que la información se desplace una posición dentro del registro. Los bits van entrando uno detrás de otro y, después de varios pulsos, empiezan a salir en el mismo orden en que entraron.
+            </div>
+
+            <div class="placeholder-box">
+               Es un registro donde los datos entran de a un bit por vez y también salen de a un bit por vez. Por eso se llama entrada serie y salida serie
+            </div>
+        </section>
+
+        <section class="data-panel">
+            <div class="data-block">
+                <div class="data-label">Registro de entrada serie y salida paralela (SIPO)</div>
+                <div class="placeholder-box">Es un registro donde los datos entran de a un bit por vez, o sea, en serie, pero después salen todos juntos, en paralelo.</div>
+            </div>
+
+            <div class="data-block">
+                <div class="data-label">PISO entrada paralela y salida serie</div>
+                <div class="placeholder-box">Es un registro donde todos los bits entran al mismo tiempo, es decir, en paralelo, pero después salen de a un bit por vez.</div>
+            </div>
+
+            <div class="data-block">
+                <div class="data-label">PIPO entrada paralela y salida paralela</div>
+                <div class="placeholder-box large-box">
+                    “Primero se cargan todos los datos juntos. Después, con cada pulso de reloj, la información se va desplazando y sale un bit por vez.”
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CAPA FLOTANTE: Menú de Selección Intermedio -->
+    <div class="decision-overlay" id="decisionOverlay">
+        <div class="decision-box">
+            <h3>Escoge una opción</h3>
+            <div class="choice-buttons">
+                <!-- Botón NO que te envía a n1.html -->
+                <a href="n1.html" class="btn-choice btn-no">No</a>
+                <!-- Botón SÍ que te envía a s1.html -->
+                <a href="s1.html" class="btn-choice btn-yes">Sí</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controles inferiores -->
+    <footer>
+        <div class="nav-info">
+            DIAPOSITIVA 01 // 10 — SECCIÓN INICIAL
+        </div>
+        <div class="nav-buttons">
+            <!-- Cambiado a botón que activa la visualización del menú en vez de redireccionar directo -->
+            <button class="btn btn-red" onclick="mostrarOpciones()">Continuar</button>
+        </div>
+    </footer>
+
+    <script>
+        // Función de control para activar la interfaz de decisión
+        function mostrarOpciones() {
+            document.getElementById('decisionOverlay').classList.add('active');
+        }
+    </script>
+
+</body>
+</html>

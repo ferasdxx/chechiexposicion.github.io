@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberLife - Estado del Sistema</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Rajdhani', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Fondo ajustado a Chechaa.png */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('Chechaa.png') no-repeat center center fixed;
+            background-size: cover;
+            filter: brightness(0.38) saturate(0.85) contrast(1.05);
+            z-index: -2;
+            transition: filter 1.5s ease;
+        }
+
+        .cyber-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(4, 18, 12, 0.45) 0%, rgba(2, 6, 4, 0.88) 100%);
+            z-index: -1;
+            transition: opacity 1.5s ease;
+        }
+
+        /* Contenedor del Mensaje */
+        .status-container {
+            background: rgba(6, 16, 12, 0.78);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-top: 4px solid #00ff88;
+            padding: 40px;
+            max-width: 500px;
+            width: 85%;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+            animation: systemBoot 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            opacity: 1;
+            transition: transform 1.2s ease, opacity 1.2s ease, filter 1.2s ease;
+        }
+
+        /* Desaparición suave del recuadro hacia abajo */
+        .status-container.fade-out {
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        @keyframes systemBoot {
+            0% {
+                transform: translateY(40px);
+                opacity: 0;
+                filter: blur(4px);
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        /* LED indicador de éxito en VERDE (Rotación corregida) */
+        .success-icon {
+            width: 65px;
+            height: 65px;
+            border: 3px solid rgba(0, 255, 136, 0.15);
+            border-top: 3px solid #00ff88;
+            border-radius: 50%;
+            margin: 0 auto 25px auto;
+            position: relative;
+            animation: spinCheck 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .success-icon::after {
+            content: '✓';
+            font-family: 'Orbitron', sans-serif;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff88;
+            font-size: 1.8rem;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeInCheck 0.4s ease 1s forwards;
+            text-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+        }
+
+        @keyframes spinCheck {
+            0% { transform: rotate(0deg); border-top-color: #00ff88; }
+            80% { transform: rotate(720deg); border-top-color: #00ff88; }
+            100% { transform: rotate(720deg); border-color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.35); }
+        }
+
+        @keyframes fadeInCheck {
+            100% { opacity: 1; }
+        }
+
+        .status-code {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: #00ff88;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+            line-height: 1.3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cyber-bg" id="bgImage"></div>
+    <div class="cyber-overlay" id="bgOverlay"></div>
+
+    <!-- Panel de Diagnóstico Simplificado -->
+    <div class="status-container" id="panel">
+        <div class="success-icon"></div>
+        <div class="status-code">SYS_STATUS // OPTIMAL_SYSTEM_RK800</div>
+
+        <!-- Solo el texto solicitado -->
+        <h1>Proceso Completado</h1>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const panel = document.getElementById('panel');
+            const bgImage = document.getElementById('bgImage');
+            const bgOverlay = document.getElementById('bgOverlay');
+
+            // A los 6 segundos el recuadro "Proceso Completado" desaparece por completo
+            setTimeout(() => {
+                panel.classList.add('fade-out');
+                
+                // Limpieza de filtros para ver el fondo nítido de Connor
+                bgImage.style.filter = "brightness(0.7) saturate(1) contrast(1)";
+                bgOverlay.style.opacity = "0.2";
+            }, 6000);
+
+            // A los 10 segundos redirige automáticamente al archivo de inicio
+            setTimeout(() => {
+                window.location.href = "inicio.html";
+            }, 10000);
+        });
+    </script>
+
+</body>
+</html>
